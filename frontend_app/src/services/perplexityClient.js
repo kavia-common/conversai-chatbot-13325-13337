@@ -48,7 +48,9 @@ export async function sendChatPrompt({ prompt, onToken, onStart, onComplete, onE
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "llama-3.1-sonar-small-128k-chat", // a fast, cost-effective chat model
+        // Use a valid Perplexity model per documentation:
+        // https://docs.perplexity.ai/guides/model-cards
+        model: "pplx-70b-online",
         stream: true,
         messages: [
           { role: "system", content: "You are a helpful AI assistant." },
