@@ -20,13 +20,16 @@ export async function sendChatPrompt({ prompt, onToken, onStart, onComplete, onE
    *  - Requires PERPLEXITY_API_KEY to be set in environment variables.
    */
 
+  // Read API key from environment. Prefer the correct CRA-prefixed key, but
+  // also support a mis-prefixed variant observed in some environments and a non-CRA name.
   const apiKey =
     process.env.REACT_APP_PERPLEXITY_API_KEY ||
-    process.env.PERPLEXITY_API_KEY; // support both, CRA requires REACT_APP_ prefix
+    process.env.REACT_APP_REACT_APP_PERPLEXITY_API_KEY ||
+    process.env.PERPLEXITY_API_KEY; // support both CRA and non-CRA names
 
   if (!apiKey) {
     const err = new Error(
-      "Missing Perplexity API key. Please set REACT_APP_PERPLEXITY_API_KEY in your .env."
+      "Missing Perplexity API key. Please set one of the following in your .env (and restart): REACT_APP_PERPLEXITY_API_KEY (preferred, CRA), REACT_APP_REACT_APP_PERPLEXITY_API_KEY (legacy/mis-prefixed), or PERPLEXITY_API_KEY."
     );
     if (onError) onError(err);
     throw err;
